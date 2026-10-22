@@ -1,0 +1,6 @@
+{
+  "name": "TimeGrid — Automated Timetable Generator",
+  "description": "Smart Academic Scheduling Powered by Graph Coloring Algorithm (DSATUR, Greedy Welsh-Powell, and Backtracking) for DAA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,1241 @@
+MASTER PROMPT — AUTOMATED TIMETABLE GENERATOR WEB APPLICATION USING GRAPH COLORING ALGORITHM
+
+1. YOUR ROLE
+
+Act as a senior full-stack web developer, UI/UX designer, graph algorithms engineer, and Data Structures and Algorithms (DAA) mentor.
+
+Build a complete, functional, modern, responsive web application titled:
+
+Automated Timetable Generator Web Application Using Graph Coloring Algorithm
+
+The application is a college-level DAA project. It must demonstrate the practical use of graph coloring to generate academic timetables while respecting teacher availability, student section availability, classroom availability, and laboratory requirements.
+
+Do not merely create a landing page or static dashboard. Build the actual application with functional forms, data management, graph construction, scheduling algorithms, conflict detection, visualizations, and export functionality.
+
+The app should be sufficiently polished to demonstrate during a college project evaluation and viva.
+
+2. TECHNOLOGY REQUIREMENTS
+
+Use the following technology stack:
+
+Frontend: React with TypeScript.
+
+Styling: Tailwind CSS if available, otherwise clean responsive CSS.
+
+Icons: lucide-react if available.
+
+Charts and visualizations: a suitable lightweight library or custom SVG.
+
+Data persistence: browser localStorage for saving application data between refreshes.
+
+Main algorithm: implement Graph Coloring directly in TypeScript.
+
+Graph visualization: use an SVG-based interactive graph or another suitable visualization.
+
+Exports: downloadable CSV and JSON, plus print-friendly reports that can be saved as PDF using the browser's print dialog.
+
+Make the application work immediately in Google AI Studio's live preview without requiring users to configure API keys, external databases, accounts, or paid services.
+
+Do not use an AI API or randomly generated text to create the actual timetable. The scheduling engine must execute real graph-coloring and constraint-checking code.
+
+Keep the code modular, strongly typed, easy to understand, and maintainable.
+
+3. PROJECT OBJECTIVE
+
+The objective is to automatically prepare a conflict-free weekly college timetable using a graph coloring algorithm.
+
+Manual timetable preparation becomes difficult when multiple subjects, teachers, sections, classrooms, and laboratory sessions must be scheduled together.
+
+The application should accept academic information as input, construct a conflict graph, assign suitable timetable slots to class-session events, allocate compatible classrooms, validate the results, and display the generated timetable.
+
+Users should be able to edit their academic data and regenerate the timetable whenever requirements change.
+
+4. CORE DAA CONCEPT: GRAPH COLORING
+
+Implement and explain this concept throughout the application.
+
+In graph coloring:
+
+A vertex represents one individual class-session event that needs to be scheduled.
+
+An edge connects two events that must not occur at the same time.
+
+A color represents a timetable time slot, such as Monday, Period 1.
+
+Adjacent vertices must not receive the same time-slot color.
+
+Each event must be assigned a valid slot that satisfies the academic constraints.
+
+Important: represent individual weekly meetings as separate vertices. For example, three weekly Mathematics lectures for CSE-A are three different class-session events, not one vertex.
+
+Create an edge between two events when they share a student section or cohort, share a teacher, or have another direct mutual-exclusion constraint.
+
+Classrooms introduce additional resource constraints. The room allocator must ensure that a room is used by at most one event at any overlapping time and that the room is appropriate for the event.
+
+The timetable slots form a predefined set of available colors. Because practical scheduling also includes availability and room constraints, do not claim that a heuristic always finds a mathematically optimal timetable or the minimum possible number of colors.
+
+Include a dedicated Graph Coloring Explained section for students who are learning the concept.
+
+Explain graph coloring using a small example:
+
+Events:
+
+E1: Mathematics for CSE-A.
+
+E2: Data Structures for CSE-A.
+
+E3: Mathematics for CSE-B.
+
+E4: Operating Systems for CSE-B.
+
+Illustrate conflicts based on shared sections or teachers. Explain how events connected by an edge cannot receive the same time slot, whereas compatible events can run simultaneously in separate rooms.
+
+Display the corresponding graph, its vertices, its edges, the adjacency list, and the assigned time slots.
+
+5. APPLICATION DESIGN AND USER INTERFACE
+
+Create a professional academic software dashboard named TimeGrid.
+
+Display the project title as:
+
+"Automated Timetable Generator"
+
+Display a subtitle:
+
+"Smart Academic Scheduling Powered by Graph Coloring"
+
+Design requirements:
+
+Clean, modern, light-themed interface.
+
+White and light-gray backgrounds with indigo and teal accents.
+
+Rounded cards, subtle shadows, attractive icons, and readable typography.
+
+A consistent design system across every page.
+
+Clear headings, informative empty states, and helpful validation messages.
+
+Responsive layouts for desktop, tablet, and mobile.
+
+Proper loading states during timetable generation.
+
+Success and error notifications.
+
+No unnecessary animations or clutter.
+
+Use accessible colors, form labels, and keyboard-friendly controls.
+
+Create a left sidebar on desktop and a collapsible navigation menu on smaller screens.
+
+Include these navigation items:
+
+Dashboard
+
+Academic Setup
+
+Manage Sections
+
+Manage Teachers
+
+Manage Subjects
+
+Manage Classrooms
+
+Generate Timetable
+
+Timetable Viewer
+
+Conflict Checker
+
+Graph Visualizer
+
+Algorithm Lab
+
+Reports
+
+DAA Project Guide
+
+Settings
+
+Every navigation item must open a functional page or section. Avoid decorative or nonfunctional buttons.
+
+6. DASHBOARD
+
+Create a dashboard that summarizes the current academic dataset.
+
+Display these statistics:
+
+Total sections.
+
+Total teachers.
+
+Total subjects.
+
+Total classrooms.
+
+Total required class sessions per week.
+
+Successfully scheduled sessions.
+
+Unscheduled sessions.
+
+Hard constraint violations.
+
+Timetable completion percentage.
+
+Number of occupied timetable slots.
+
+Number of vertices and edges in the conflict graph.
+
+Use summary cards, a weekly schedule preview, a resource summary, and a recent activity panel.
+
+Include prominent actions:
+
+Load Demo Dataset.
+
+Add Academic Data.
+
+Generate Timetable.
+
+View Latest Timetable.
+
+View Graph.
+
+Download Report.
+
+Calculate all statistics from actual application data. Do not hardcode statistics that become incorrect when data changes.
+
+7. ACADEMIC SETUP AND INPUT FORMS
+
+Provide complete forms to create, view, edit, and delete academic data.
+
+A. Academic calendar
+
+Allow users to configure:
+
+Institution name.
+
+Department.
+
+Academic year or semester.
+
+Working days, configurable from Monday to Saturday.
+
+Number of periods per day.
+
+Period names and start/end times.
+
+Period duration.
+
+Break and lunch periods.
+
+Unavailable time slots.
+
+Optional institutional scheduling preferences.
+
+Provide a sensible default schedule:
+
+Monday to Friday.
+
+Six teaching periods per day.
+
+One configurable lunch break.
+
+Period times editable by the user.
+
+Breaks must never be assigned to classes.
+
+Ensure that the user can enable Saturday or change the number of periods without breaking the scheduler.
+
+B. Student sections and cohorts
+
+Each section should have:
+
+Section ID.
+
+Section name, such as CSE-A or CSE-B.
+
+Department.
+
+Semester or year.
+
+Student strength.
+
+Optional availability restrictions.
+
+A class-session event linked to a section must not overlap another event involving the same students.
+
+Support a combined class involving multiple sections by associating a single event with all participating sections.
+
+C. Teachers
+
+Each teacher should have:
+
+Unique teacher ID.
+
+Name.
+
+Department.
+
+Subjects they can teach, where applicable.
+
+Available days and time slots.
+
+Unavailable days and time slots.
+
+Optional maximum daily teaching load.
+
+Prevent two classes assigned to the same teacher from overlapping.
+
+Treat teacher availability as a hard constraint. Optional load balancing should be clearly identified as a preference or configurable rule.
+
+D. Subjects and class-session requirements
+
+Each subject should have:
+
+Subject code.
+
+Subject name.
+
+Assigned teacher.
+
+Assigned section or sections.
+
+Required sessions per week.
+
+Required room type: classroom, computer lab, science lab, or another configurable type.
+
+Expected attendance or combined enrollment.
+
+Session duration in periods.
+
+Preferred days or time slots, if any.
+
+Optional maximum sessions per day.
+
+For example:
+
+Mathematics: three 1-period sessions per week.
+
+Data Structures: three 1-period sessions per week.
+
+Database Management Systems: three 1-period sessions per week.
+
+Programming Lab: one 2-period consecutive session per week.
+
+When the timetable is generated, expand each subject's weekly requirements into individual class-session events.
+
+A 2-period laboratory session must occupy two consecutive available periods on the same day and use a compatible lab for the entire duration.
+
+Avoid scheduling the same subject repeatedly on the same day when possible. Treat such preferences as soft constraints unless explicitly configured as hard constraints.
+
+E. Classrooms and laboratories
+
+Each room should have:
+
+Room ID.
+
+Room name or number.
+
+Room type.
+
+Seating capacity.
+
+Available days and time slots.
+
+Optional location or building.
+
+Examples:
+
+Classroom 101, capacity 60.
+
+Classroom 102, capacity 60.
+
+Computer Lab 1, capacity 40.
+
+Computer Lab 2, capacity 35.
+
+Never assign a class to a room with inadequate capacity or an incompatible room type.
+
+Never schedule two events in the same room during overlapping periods.
+
+Allow the user to add, edit, and delete rooms.
+
+8. DEMO DATASET
+
+On the first launch, provide an immediately usable sample dataset suitable for a college demonstration.
+
+Include:
+
+Two student sections: CSE-A and CSE-B.
+
+At least six teachers.
+
+At least five subjects per section.
+
+Weekly repeated sessions.
+
+At least three classrooms.
+
+At least one computer laboratory.
+
+A five-day calendar with six teaching periods per day and a break.
+
+Different teacher assignments and availability restrictions.
+
+A mixture of lecture and laboratory sessions.
+
+Design the sample data to be feasible, so a valid schedule can normally be generated using the built-in algorithms.
+
+Include a Load Demo Dataset button that restores the example data after asking for confirmation.
+
+Clearly label demo data as illustrative. Do not present it as actual institutional data.
+
+Persist user-created data using localStorage and preserve edits across page refreshes.
+
+9. TIMETABLE GENERATION ENGINE
+
+This is the most important feature of the entire project.
+
+Implement the scheduling engine in real TypeScript code. Separate the algorithm from the UI.
+
+Use a clear internal model for:
+
+Sections.
+
+Teachers.
+
+Subjects.
+
+Rooms.
+
+Class-session events.
+
+Time slots.
+
+Conflict graph vertices.
+
+Conflict graph edges.
+
+Generated timetable entries.
+
+Validation results.
+
+Each class-session event must have a unique ID, subject, teacher, participating section IDs, duration, required room type, enrollment, and scheduling preferences.
+
+Build the timetable in the following stages.
+
+Stage 1: Validate the inputs
+
+Check for missing teachers, invalid room capacities, incomplete subject assignments, impossible durations, missing calendar slots, and contradictory restrictions.
+
+Explain input errors clearly before starting the algorithm.
+
+Stage 2: Expand weekly sessions
+
+Convert every subject's weekly session requirement into individual events.
+
+For example, a subject requiring three sessions per week should generate three separate event vertices.
+
+Stage 3: Construct the conflict graph
+
+Build an adjacency-list representation of the conflict graph.
+
+Add an edge when two events share a teacher or at least one student section, or when another explicitly configured pairwise hard constraint prohibits simultaneous scheduling.
+
+Do not add an edge merely because two subjects are different.
+
+Ensure the graph is undirected and has no duplicate edges or self-loops.
+
+Display the number of vertices, edges, and each event's degree.
+
+Stage 4: Generate candidate time slots
+
+Create the list of valid timetable time slots from the academic calendar.
+
+Exclude breaks, periods outside the working calendar, and slots unavailable to the participating sections or teachers.
+
+For a laboratory session, generate only candidate start times that provide the required number of consecutive periods without crossing breaks or the end of the day.
+
+Stage 5: Color the graph
+
+Use the selected graph-coloring algorithm to determine the time assignment of each event.
+
+A slot can be reused by nonconflicting events, provided sufficient compatible rooms are available.
+
+Use the graph-coloring constraints together with a resource-aware room allocator.
+
+Stage 6: Allocate rooms
+
+For each scheduled event, identify compatible rooms that have sufficient capacity and are available throughout the event's duration.
+
+When several compatible rooms exist, choose one that does not conflict with already scheduled events.
+
+If the algorithm cannot allocate a room, try another candidate slot or backtrack.
+
+Room allocation must be integrated with scheduling rather than performed through a final step that silently creates room conflicts.
+
+Stage 7: Improve the schedule
+
+Among valid solutions, prefer timetables that:
+
+Distribute subject sessions across different days.
+
+Respect preferred time slots.
+
+Avoid excessive gaps where practical.
+
+Balance daily teaching loads.
+
+Avoid scheduling the same subject too many times on one day.
+
+Use rooms efficiently.
+
+Track soft-constraint violations separately from hard-constraint violations.
+
+Stage 8: Independently verify the result
+
+Run a separate timetable validator after generation.
+
+Verify every hard constraint before declaring success.
+
+If the schedule is incomplete, clearly display the unscheduled events and likely reasons, such as unavailable teachers, insufficient compatible rooms, or restrictive time slots.
+
+Never silently discard a required session or report an incomplete schedule as a complete success.
+
+10. GRAPH COLORING ALGORITHMS
+
+Implement three scheduling methods.
+
+Algorithm A: Greedy Graph Coloring
+
+Use a deterministic greedy method with vertices ordered by descending degree, with stable tie-breaking.
+
+For each vertex, assign the earliest feasible timetable slot that does not conflict with already assigned adjacent vertices and that satisfies availability and room constraints.
+
+Explain the first-fit coloring idea.
+
+Display the resulting timetable, assigned slots, number of sessions scheduled, and validation results.
+
+Algorithm B: DSATUR Algorithm
+
+Make DSATUR the default recommended algorithm.
+
+DSATUR means Degree of Saturation.
+
+At each scheduling step:
+
+Select an uncolored vertex with the highest saturation degree.
+
+Saturation degree is the number of distinct time-slot colors already assigned to its colored neighbors.
+
+If saturation degrees are equal, select the vertex with the highest graph degree.
+
+Apply additional stable tie-breakers, such as event duration and event ID.
+
+Find a feasible time slot that respects the graph, availability, duration, and room constraints.
+
+Assign that slot and update neighboring saturation information.
+
+Repeat until every event is scheduled or no feasible assignment can be found.
+
+Try alternative candidate slots whenever room allocation or additional constraints prevent the first candidate from working.
+
+Use backtracking when appropriate to reconsider previous assignments.
+
+Explain why DSATUR often performs well on practical graph-coloring problems, but do not guarantee that it always produces the optimal solution.
+
+Algorithm C: Backtracking Graph Coloring
+
+Implement a backtracking scheduler for smaller datasets.
+
+The algorithm should:
+
+Select an unassigned event.
+
+Try each feasible time slot.
+
+Check graph-coloring and resource constraints.
+
+Continue recursively if the assignment is valid.
+
+Backtrack when a later event cannot be assigned.
+
+Stop after finding a complete valid solution or reaching a documented search limit.
+
+Use forward checking and a configurable node or search limit to prevent extremely long runs.
+
+If the search limit is reached, clearly indicate that the search was stopped and that optimality or infeasibility has not been proven.
+
+Never label a failed search as proof that no valid timetable exists.
+
+Algorithm comparison
+
+Provide an Algorithm Selector with:
+
+Greedy Coloring.
+
+DSATUR.
+
+Backtracking.
+
+Run each algorithm against the same input dataset using independent copies of the graph and scheduling state.
+
+Display a comparison table containing:
+
+Algorithm name.
+
+Execution time measured during the actual run.
+
+Total required events.
+
+Successfully scheduled events.
+
+Unscheduled events.
+
+Distinct occupied time slots.
+
+Hard constraint violations.
+
+Soft preference score.
+
+Whether a complete valid schedule was found.
+
+Whether the search reached its limit.
+
+Use real measured values. Do not fabricate performance statistics.
+
+Use deterministic tie-breaking by default so repeated runs on the same dataset are reproducible.
+
+11. GRAPH VISUALIZER
+
+Create a dedicated interactive Graph Visualizer page.
+
+Display:
+
+Every class-session event as a node.
+
+Every conflict as an edge.
+
+Node labels containing event ID and subject abbreviation.
+
+Assigned time-slot colors after scheduling.
+
+Different visual states for uncolored, assigned, and unscheduled nodes.
+
+A legend explaining the colors.
+
+Vertex count and edge count.
+
+Degree of each vertex.
+
+Saturation degree during DSATUR execution.
+
+Include options to:
+
+Show the complete graph.
+
+Filter by section.
+
+Filter by teacher.
+
+Highlight the neighbors of a selected vertex.
+
+View the adjacency list.
+
+Inspect event details.
+
+View the graph before coloring.
+
+View the graph after coloring.
+
+Clearly illustrate that two vertices connected by an edge cannot receive the same time-slot color.
+
+Use a visually attractive, readable graph. If the full graph becomes large, provide filters and a scrollable canvas instead of making labels unreadable.
+
+12. STEP-BY-STEP ALGORITHM LAB
+
+Create an educational page that demonstrates how the algorithm works.
+
+Users should be able to select Greedy Coloring, DSATUR, or Backtracking and execute the algorithm step by step.
+
+Provide the controls:
+
+Start.
+
+Pause.
+
+Resume.
+
+Next Step.
+
+Previous Step where supported by the stored trace.
+
+Reset.
+
+Run to Completion.
+
+At every step, display:
+
+The event being considered.
+
+Its current degree.
+
+Its saturation degree, when applicable.
+
+Already colored neighboring events.
+
+Candidate time slots.
+
+Slots rejected because of conflicts.
+
+Slots rejected because of availability or room constraints.
+
+The chosen slot and the reason for the choice.
+
+Whether backtracking occurred.
+
+Store algorithm trace events during execution so that the explanation reflects what the algorithm actually did, not a predefined demonstration.
+
+Add a small example graph for first-time users.
+
+Include readable pseudocode for the three implemented algorithms.
+
+13. GENERATED TIMETABLE VIEWER
+
+Display the generated timetable in a clear weekly grid.
+
+Rows represent teaching periods and columns represent weekdays, or vice versa, provided the layout is easy to read.
+
+Each timetable cell should display:
+
+Subject name.
+
+Subject code.
+
+Teacher name.
+
+Room name.
+
+Section name.
+
+Start and end time.
+
+Session type, such as lecture or laboratory.
+
+Use consistent colors for subjects or session types, with sufficient text contrast.
+
+Include filters for:
+
+Section.
+
+Teacher.
+
+Room.
+
+Subject.
+
+Day.
+
+Allow users to switch between:
+
+Section-wise timetable.
+
+Teacher-wise timetable.
+
+Room-wise timetable.
+
+Complete institutional timetable.
+
+Clicking a scheduled event should open a details panel.
+
+Allow manual rescheduling through an edit or move action. Validate any proposed change before committing it. Prevent invalid hard-constraint violations and explain why an attempted change is rejected.
+
+For laboratory sessions, moving the event must preserve the required duration and consecutive periods.
+
+Include print-friendly styling and a weekly calendar export.
+
+14. CONFLICT CHECKER
+
+Create a dedicated Conflict Checker.
+
+Detect and report:
+
+Teacher clashes.
+
+Student section or cohort clashes.
+
+Classroom clashes.
+
+Room capacity violations.
+
+Incorrect room types.
+
+Teacher availability violations.
+
+Section availability violations.
+
+Scheduling during breaks.
+
+Laboratory sessions that are not consecutive.
+
+Laboratory sessions that cross unavailable periods.
+
+Missing required sessions.
+
+Duplicate or invalid assignments.
+
+Show each issue in a table with:
+
+Conflict type.
+
+Affected event or events.
+
+Day and time.
+
+Affected teacher, section, or room.
+
+Explanation.
+
+Suggested correction.
+
+Separate hard constraint violations from soft preference warnings.
+
+Display a visible validation summary showing:
+
+Hard violations.
+
+Soft warnings.
+
+Scheduled events.
+
+Unscheduled events.
+
+Overall validity.
+
+A schedule may be marked fully valid only when every required event is scheduled and there are zero hard constraint violations.
+
+If the timetable is incomplete, use an appropriate status such as "Partial Schedule — Unscheduled Sessions Remain."
+
+15. SOFT CONSTRAINTS AND SCHEDULING QUALITY
+
+Implement a configurable scoring system for optional scheduling preferences.
+
+Possible preferences include:
+
+Distributing repeated subject sessions over the week.
+
+Avoiding consecutive same-subject sessions when unnecessary.
+
+Respecting preferred time slots.
+
+Avoiding excessive daily load.
+
+Reducing room changes when practical.
+
+Reducing isolated gaps in a section's timetable.
+
+Allow users to enable or disable individual preferences.
+
+Clearly distinguish hard constraints from soft preferences.
+
+A soft preference must not override a hard constraint.
+
+Display a schedule-quality score and explain how it is calculated. Make the weighting configurable and document the scoring formula in the interface.
+
+Do not present the quality score as proof of mathematical optimality.
+
+16. REPORTS AND EXPORTS
+
+Create a Reports page with a summary of the generated timetable.
+
+Include:
+
+Total class-session events required.
+
+Number scheduled.
+
+Number remaining unscheduled.
+
+Number of teachers and rooms used.
+
+Number of graph vertices and edges.
+
+Number of distinct occupied time slots.
+
+Classroom utilization.
+
+Section-wise session distribution.
+
+Teacher workload summary.
+
+Subject distribution across weekdays.
+
+Hard conflicts and soft warnings.
+
+Algorithm used.
+
+Algorithm execution time.
+
+Schedule validity status.
+
+Provide suitable charts and clear tables.
+
+Add working export buttons for:
+
+CSV export
+
+Download scheduled events with day, period, section, subject, teacher, room, and duration.
+
+Offer the conflict report as another CSV export.
+
+JSON backup
+
+Export the academic configuration, constraints, and timetable data.
+
+Allow importing a previously exported compatible JSON file after validating its structure.
+
+Printable report
+
+Create a clean report layout that can be printed or saved as PDF through the browser's print dialog.
+
+Include the project title, academic details, timetable, algorithm used, summary statistics, and validation status.
+
+Hide navigation and buttons in print mode.
+
+Do not display an export button that does nothing.
+
+17. DAA PROJECT GUIDE
+
+Create an in-app section called "DAA Project Guide."
+
+Use simple English suitable for a second-year Computer Science student.
+
+Explain the following topics.
+
+Problem statement
+
+Manual timetable preparation becomes complex as the number of subjects, student sections, teachers, rooms, and scheduling constraints increases. The goal is to automate the process while minimizing conflicts.
+
+Why graph coloring?
+
+Conflicting class events cannot occur simultaneously. Graph coloring models these restrictions by connecting incompatible events with edges and assigning time-slot colors to vertices.
+
+Problem mapping
+
+Explain:
+
+Vertices = individual class-session events.
+
+Edges = conflicts.
+
+Colors = timetable time slots.
+
+Color assignment = scheduling.
+
+Room allocation = an additional resource constraint.
+
+Algorithm workflow
+
+Display this flow:
+
+Academic Input → Session Expansion → Conflict Graph Construction → Graph Coloring → Room Allocation → Validation → Timetable Output.
+
+Algorithm explanation
+
+Provide simple explanations of:
+
+Greedy Graph Coloring.
+
+Welsh–Powell ordering as an optional greedy ordering strategy.
+
+DSATUR.
+
+Backtracking.
+
+Adjacency lists.
+
+Vertex degree.
+
+Saturation degree.
+
+Time complexity.
+
+Space complexity.
+
+Hard and soft constraints.
+
+Complexity analysis
+
+Explain the implementation's actual complexity and state the assumptions clearly.
+
+For a straightforward DSATUR implementation that repeatedly scans vertices to find the next one, explain that graph-coloring selection can take approximately O(V² + E) time for the coloring phase, excluding the additional work needed for slot candidates, room allocation, validation, and soft-constraint optimization.
+
+Explain that constructing an adjacency list can be O(V + E) once the relevant conflict relationships have been identified and that storing the graph takes O(V + E) space.
+
+Explain that backtracking can take exponential time in the worst case, commonly described by an O(k^V) upper bound for exploring assignments from k candidate colors, with the practical work also affected by constraints, pruning, and implementation details.
+
+Define V as the number of event vertices, E as the number of graph edges, and k as the number of candidate colors or time slots.
+
+Do not present an approximate implementation-specific bound as a universal bound for every part of the complete application.
+
+Advantages
+
+Explain that automated graph-based scheduling can reduce manual effort, detect conflicts, compare scheduling methods, and make academic timetable changes easier to manage.
+
+Limitations
+
+Explain that graph coloring is computationally difficult in general, heuristic results are not guaranteed to be optimal, and additional constraints such as room capacity and consecutive laboratory sessions make real-world timetabling more complex than basic graph coloring.
+
+Future enhancements
+
+Provide possible extensions such as database-backed multi-user access, institutional timetable imports, calendar synchronization, richer optimization strategies, and improved large-scale scheduling.
+
+Viva questions and answers
+
+Include at least 12 useful viva questions with simple answers, such as:
+
+What is graph coloring?
+
+What does a vertex represent in this project?
+
+What does an edge represent?
+
+Why is a time slot treated as a color?
+
+Why is greedy coloring used?
+
+What is the DSATUR algorithm?
+
+What is saturation degree?
+
+What is the difference between greedy and backtracking?
+
+Why can a greedy algorithm fail to find a complete schedule?
+
+What is the time complexity of backtracking graph coloring?
+
+How does the application avoid teacher clashes?
+
+Why is room allocation required in addition to graph coloring?
+
+What is the difference between a hard and a soft constraint?
+
+Does DSATUR always provide an optimal timetable?
+
+18. SETTINGS AND DATA MANAGEMENT
+
+Allow users to:
+
+Edit institution and semester information.
+
+Configure working days and periods.
+
+Manage available time slots.
+
+Set algorithm preferences.
+
+Configure soft-constraint weights.
+
+Clear a generated timetable without deleting the academic dataset.
+
+Reset demo data.
+
+Export and import data backups.
+
+Ask for confirmation before destructive actions.
+
+Store current application data locally so users can refresh the browser and continue working.
+
+Handle missing, malformed, or outdated stored data safely, and provide a way to recover by loading the demo dataset.
+
+19. CODE ORGANIZATION
+
+Keep the implementation modular.
+
+Use separate files or well-organized modules for:
+
+TypeScript data models.
+
+Sample data.
+
+Local data persistence.
+
+Form validation.
+
+Class-session event generation.
+
+Conflict graph construction.
+
+Greedy coloring.
+
+DSATUR coloring.
+
+Backtracking coloring.
+
+Time-slot candidate generation.
+
+Room allocation.
+
+Hard constraint validation.
+
+Soft-constraint scoring.
+
+Algorithm trace generation.
+
+Timetable state management.
+
+CSV and JSON export.
+
+UI components and pages.
+
+Suggested logical structure:
+
+src/types/
+
+src/data/
+
+src/algorithms/
+
+src/services/
+
+src/components/
+
+src/pages/
+
+src/utils/
+
+Adapt the file structure to the actual project environment, but do not put the entire scheduling engine in a single unmanageable UI component.
+
+Use readable variable names and useful comments explaining the algorithm.
+
+Use proper TypeScript types instead of using any everywhere.
+
+Avoid duplicate scheduling logic in different pages. The generator and independent validator must use consistent event and slot definitions.
+
+20. ERROR HANDLING AND RELIABILITY
+
+The application must:
+
+Validate user inputs.
+
+Handle empty datasets.
+
+Prevent duplicate identifiers.
+
+Prevent invalid time ranges.
+
+Handle insufficient available rooms.
+
+Handle teachers with restrictive availability.
+
+Handle insufficient timetable slots.
+
+Handle long laboratory sessions.
+
+Handle incomplete scheduling attempts.
+
+Preserve user data when generating a timetable fails.
+
+Display meaningful error messages.
+
+Avoid crashing when data is deleted or edited.
+
+Never fabricate a conflict-free schedule.
+
+Never claim that the timetable is fully valid without running the independent validator.
+
+When the scheduler cannot produce a complete schedule, offer actionable guidance, such as checking teacher availability, increasing available slots, adding suitable rooms, or relaxing optional preferences.
+
+Do not automatically weaken hard constraints just to produce a timetable.
+
+21. IMPORTANT ACCEPTANCE TESTS
+
+Before declaring the application complete, verify these behaviors in the generated code and preview.
+
+Test 1: Initial launch
+
+The app opens successfully, displays the dashboard, and allows the user to load the demo dataset.
+
+Test 2: Graph construction
+
+Generating the conflict graph produces real vertices and edges based on the actual event assignments.
+
+Test 3: DSATUR scheduling
+
+Selecting DSATUR executes the actual algorithm and generates a timetable if the configured problem is feasible.
+
+Test 4: Teacher clashes
+
+Two events assigned to the same teacher cannot overlap.
+
+Test 5: Section clashes
+
+Two events involving the same student section cannot overlap.
+
+Test 6: Room clashes
+
+Two events cannot use the same room during overlapping time periods.
+
+Test 7: Room requirements
+
+A laboratory session cannot be assigned an incompatible room or a room with insufficient capacity.
+
+Test 8: Laboratory duration
+
+A 2-period laboratory session occupies consecutive valid periods on the same day.
+
+Test 9: Breaks and availability
+
+Classes cannot be assigned to breaks or unavailable periods.
+
+Test 10: Unscheduled sessions
+
+When an event cannot be scheduled, the application shows the event and an explanation instead of silently omitting it.
+
+Test 11: Independent validation
+
+A completed timetable passes the separate hard-constraint validator with zero hard violations.
+
+Test 12: Data persistence
+
+Academic data remains available after refreshing the browser.
+
+Test 13: Algorithm comparison
+
+Each algorithm runs separately on the same dataset and displays measured metrics.
+
+Test 14: Export functionality
+
+CSV and JSON downloads work, and the printable report can be saved as PDF through the print dialog.
+
+Test 15: Responsive interface
+
+The major application features remain usable on desktop and mobile layouts.
+
+Test 16: User edits
+
+Adding or editing teachers, subjects, rooms, sections, and availability updates the underlying graph and timetable calculations appropriately.
+
+Test 17: Step-by-step trace
+
+The Algorithm Lab displays actual recorded execution steps, not a hardcoded animation.
+
+22. FINAL IMPLEMENTATION INSTRUCTIONS
+
+Build the application now.
+
+Prioritize a working end-to-end timetable generator with real graph-coloring logic, a usable dashboard, functional academic data forms, the conflict graph, validation, and a clear timetable viewer.
+
+Implement all major features specified above rather than stopping after a visual mockup.
+
+If any advanced feature must be simplified, preserve the core algorithm and provide an honest, functional alternative.
+
+Do not leave placeholder pages, dummy buttons, fabricated results, or unfinished algorithm implementations.
+
+Use a consistent source of truth for application data, make all major actions functional, and ensure that the application can be demonstrated using the supplied sample dataset.
+
+After implementation, run the available build or preview checks, fix TypeScript errors, runtime errors, and broken imports, and test the main scheduling workflow before finishing.
+
+The final application must demonstrate the actual use of graph coloring for automated academic timetable generation and explain the DAA concepts clearly enough for a college project demonstration and viva.
